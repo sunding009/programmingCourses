@@ -1,0 +1,172 @@
+课程
+
+第一章：基础篇 (17讲)
+01 | 课程介绍
+02 | Vue简介
+03 | 内容综述
+04 | 第一个Vue程序
+05 | 组件基础及组件注册
+06 | Vue组件的核心概念：事件
+07 | Vue组件的核心概：插槽
+08 | 理解单文件组件
+09 | 双向绑定和单向数据流不冲突
+10 | 理解虚拟DOM及key属性的作用
+11 | 如何触发组件的更新
+12 | 合理应用计算属性和侦听器
+13 | 生命周期的应用场景和函数式组件
+14 | 指令的本质是什么
+15 | 常用高级特性provide/inject
+16 | 如何优雅地获取跨层级组件实例（拒绝递归）
+17 | template和JSX的对比以及它们的本质
+
+第二章：生态篇 (13讲)
+18 | 为什么需要Vuex
+19 | 如何在Vue中使用Vuex
+20 | Vuex核心概念及底层原理
+21 | Vuex最佳实践
+22 | Vue Router的使用场景
+23 | 选择何种模式的路由及底层原理
+24 | Nuxt解决了哪些问题？
+25 | Nuxt核心原理是什么？
+26 | UI组件库对比：Element UI、Ant Design Vue、iView
+27 | 提升开发效率和体验的常用工具：ESLint、Prettier、vue-devtools
+28 | 单元测试的重要性及其使用
+29 | 生态篇习题解答（上）
+30 | 生态篇习题解答（下）
+
+第三章：实战篇 (21讲)
+
+31 | Ant Design Pro介绍
+32 | 使用Vue CLI 3快速创建项目 (CLI：脚手架)
+    1)->Desktop # vue create ant-design-vue-pro（创建项目名称）
+    2)?Please pick a preset:
+        defaut (babel, eslint)
+        *Manually select features
+    3)?Check the features needed for your project:
+        *Babel
+        TypeScript（vue对TypeScript的支持不友好）
+        Progressive Web App (PWA) Support
+        *Router（路由管理器）
+        *VueX（动态管理）
+        *CSS Pre-processors（（预/域）处理器，自定义主题）
+        *Linter / Formatter
+        *Unit Testing（单元测试）
+        E2E Testing（端到端测试）
+    4)?Use history mode for router? Y
+    5)?Pick a CSS pre-processor:
+        Sass / SCS(with dart-sass)
+        Sass / SCS(with mode-sass)
+        *Less(ant-design-vue默认是使用Less)
+        Stylus
+    6)?Pick a linter / formatter config:
+        ESLint with error prevention only
+        ESLint + Airbnb config
+        ESLint + Standard config
+        *ESLint + Prettier
+    7)?Pick addtional lint features:
+        *Lint on save（保存的时候lint）
+        *Lint and fix on commit（提交代码的时候lint）
+    8)?Pick a unit testing solution:
+        Mocha + Chai
+        *Jest
+    9)?Where do you prefer placing config for Babel, PostCSS, ESLint, etc.?
+        In dedicated config files（配置文件分别放在单独的文件里）
+        In package.json（配置文件全部放在package.json文件里）
+    10)?Save this as a preset for future projects?y（是否将该项目保存为模板）
+    11)?Save preset as:ant-design-vue-pro（保存的模板名是？）
+    12)?Successfully created project ant-design-vue-pro.（这是完成后的提示，什么命令也不做）
+         Get started with the following commands:
+             cd ant-design-vue-pro
+             nmp run serve
+    13)->Desktop # clear（清空屏幕）
+    14)->Desktop # cd ant-design-vue-pro
+    15)->ant-design-vue-pro git:(master) # npm i ant-design-vue moment（安装组件库，使用空格隔开组件包）
+33 | 如何自定义Webpack和Babel配置
+    1)->ant-design-vue-pro git:(master) # npm run serve（启动了web服务，可以点击生成的链接查看页面）
+    2)去工程文件里面
+        ant-design-vue-pro>src>App.vue
+            删除<style lang="less"> </style>中间的样式预设
+        ant-design-vue-pro>src>views>Home.vue
+            删除<template><div class="home"></div></template> 中间的图片和文字组件
+            删除<script></script>中间的import语句，components设为空（components:{}）
+        ant-design-vue-pro>src>main.js
+            添加 import Antd from 'ant-design-vue'
+            Vue.use(Antd);（将ant-design-vue提供给所有的组件）
+        ant-design-vue-pro>src>App.vue
+            <template>
+                <div id="app">
+                    <a-botton>按钮</a-button>（添加）
+                        <div id="nav">
+        刷新页面查看效果
+        ant-design-vue-pro>src>main.js
+            添加 import "ant-design-vue/dist/antd.css";
+            修改为 import "ant-design-vue/dist/antd.less";
+            报错，提示是44错误，打开报错信息中的错误地址
+            提示开启JavaScript就可以了
+                {
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
+                }
+            less-loader是webpack的一个配置
+            https://cli.vuejs.org/zh/config
+            新建 ant-design-vue-pro>vue.config.js文件
+                添加（参考：css.loaderOptions）
+                // vue.config.js
+                module.export = {
+                    css: {
+                        loaderOptions:{
+                            less: {
+                                javascriptEnabled: true
+                            }
+                        }
+                    }
+                }
+        ->ant-design-vue-pro git:(master) # npm run serve（热登机不会对配置文件热读取）
+    3)import Antd from 'ant-design-vue'是把ant-design-vue的所有组件都导入进来，而我们只使用了button，造成了资源浪费
+        ant-design-vue-pro>src>main.js
+            修改 import Antd from 'ant-design-vue'; 为 import Button from 'ant-design-vue/lib/button';
+            修改 Vue.use(Antd); 为 Vue.use(Button);
+            修改为 import "ant-design-vue/dist/antd.less"; 为 import "ant-design-vue/lib/button/style";
+        ->ant-design-vue-pro git:(master) # npm run serve（热登机不会对配置文件热读取）
+    4)更好的导入组件的方式是使用babel，按需加载
+        ->ant-design-vue-pro git:(master) # npm i --save-dev babel-plugin-import（安装babel组件导入插件到dev dependence依赖文件夹）
+        ant-design-vue-pro>babel.config.js
+            module.exports = {
+                presets: ["@vue/app"], 
+                "plugins": [
+                    ["import", { "libraryName": "ant-design-vue", "libraryDirectory": "es", "style": "css"}] //
+"style": true 会加载 less文件
+                ]
+            };
+            修改"style": "css" 为 "style": true
+        ant-design-vue-pro>src>main.js
+            修改 import Button from 'ant-design-vue/lib/button'; 为  import {Button} from 'ant-design-vue';
+            删除 import "ant-design-vue/lib/button/style";
+        ->ant-design-vue-pro git:(master) # npm run serve（热登机不会对配置文件热读取）
+34 | 如何设计一个高扩展性的路由
+    基于配置的路由和基于第三方工具约定的路由
+    ant-design-vue-pro>src>components>router.js
+        
+35 | 实现一个可动态改变的页面布局
+36 | 如何将菜单和路由结合
+37 | 如何使用路由管理用户权限
+38 | 更加精细化的权限设计（权限组件、权限指令）
+39 | 如何在组件中使用ECharts、Antv等其他第三方库
+40 | 如何高效地使用Mock数据进行开发
+41 | 如何与服务端进行交互（Axios）
+42 | 创建一个普通表单
+43 | 初始数据、自动校验、动态赋值
+44 | 创建一个分步表单
+45 | 自己封装一个支持自动校验的表单项
+46 | 如何管理系统中使用的图标
+47 | 如何定制主题及动态切换主题
+48 | 如何做好国际化
+49 | 如何高效地构建打包发布
+50 | 如何构建可交互的组件文档
+51 | 如何做好组件的单元测试
+
+第四章：福利篇 (2讲)
+52 | 如何发布组件到npm
+53 | GitHub相关生态应用（持续集成、单测覆盖率、文档发布、issue管理）
